@@ -17,12 +17,12 @@ public class WelcomePokerController {
 
     @GetMapping(path = "/welcome-bean")
     public WelcomePokerBean welcomeBean() {
-        return new WelcomePokerBean("Hello Bean!");
+        return new WelcomePokerBean();
     }
 
     @GetMapping(path = "/welcome/{username}")
     public WelcomePokerBean welcomeUser(@PathVariable String username) {
-//        throw new RuntimeException("Something went wrong");
-        return new WelcomePokerBean(String.format("Hello %s", username));
+        throw new RuntimeException("Something went wrong");
+//        return new WelcomePokerBean(String.format("Hello %s", username));
     }
 }
