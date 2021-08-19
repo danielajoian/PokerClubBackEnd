@@ -20,9 +20,9 @@ public class WelcomePokerController {
         return new WelcomePokerBean();
     }
 
-    @GetMapping(path = "/welcome/{username}")
-    public WelcomePokerBean welcomeUser(@PathVariable String username) {
-        throw new RuntimeException("Something went wrong");
-//        return new WelcomePokerBean(String.format("Hello %s", username));
-    }
+//    @GetMapping(path = "/welcome/{username}")
+//    public WelcomePokerBean welcomeUser(@PathVariable String username) {
+//        throw new RuntimeException("Something went wrong");
+////        return new WelcomePokerBean();
+//    }
 }
