@@ -13,8 +13,12 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4000")
 public class GameResource {
 
-    @Autowired
     private GameHardcodedService gameService;
+
+    @Autowired
+    public GameResource(GameHardcodedService gameService) {
+        this.gameService = gameService;
+    }
 
     @GetMapping(path = "/{clubUsername}/games")
     public List<Game> getAllGames(@PathVariable String clubUsername) {
