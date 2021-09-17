@@ -1,14 +1,13 @@
 package com.codecool.pokerclubbackend.repository;
 
-import com.codecool.pokerclubbackend.model.ClubJpa;
+import com.codecool.pokerclubbackend.model.PlayerJpa;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface ClubRepository extends JpaRepository<ClubJpa, Long> {
+public interface PlayerRepository extends JpaRepository<PlayerJpa, Long> {
 
-    Optional<ClubJpa> findByClubUsername(String clubUsername);
+    Optional<PlayerJpa> findByUsername(String username);
 }
-

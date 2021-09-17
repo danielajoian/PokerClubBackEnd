@@ -23,7 +23,6 @@ public class GameJpa {
     private long id;
     private String clubUsername;
     private String title;
-
     @Column(length = 5000)
     private String details;
     private Date beginDate;
