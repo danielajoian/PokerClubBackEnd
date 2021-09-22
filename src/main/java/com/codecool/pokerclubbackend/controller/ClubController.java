@@ -5,6 +5,7 @@ import com.codecool.pokerclubbackend.repository.ClubRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -14,6 +15,8 @@ import java.util.List;
 @RestController
 @CrossOrigin(origins = "http://localhost:4000")
 public class ClubController {
+
+    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     private ClubRepository clubRepository;
 
@@ -41,6 +44,7 @@ public class ClubController {
             @RequestBody ClubJpa club) {
 
         club.setClubUsername(clubUsername);
+        club.setPassword(encoder.encode(club.getPassword()));
         ClubJpa createdClub = clubRepository.save(club);
 
         //Get current resource url

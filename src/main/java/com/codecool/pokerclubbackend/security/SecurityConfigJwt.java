@@ -42,7 +42,7 @@ public class SecurityConfigJwt extends WebSecurityConfigurerAdapter {
 // configure AuthenticationManager so that it knows from where to load
 // user for matching credentials
 // Use BCryptPasswordEncoder
-        //auth.userDetailsService(customClubDetailsService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(customClubDetailsService).passwordEncoder(passwordEncoder());
         auth.userDetailsService(customPlayerDetailsService).passwordEncoder(passwordEncoder());
     }
 
@@ -74,13 +74,18 @@ public class SecurityConfigJwt extends WebSecurityConfigurerAdapter {
                 .authorizeRequests() // restrict access based on the config below:
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/jpa/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/players/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/players/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/clubs/**").permitAll()
+                .antMatchers("/authenticatePlayer").permitAll()
+                .antMatchers("/authenticateClub").permitAll()
+                .antMatchers(HttpMethod.GET, "/welcome-bean").authenticated() // allowed only when signed in
                 .antMatchers(HttpMethod.OPTIONS, "/clubs/**").authenticated() // allowed only when signed in
                 .antMatchers(HttpMethod.OPTIONS, "/players/**").authenticated() // allowed only when signed in
                 .antMatchers(HttpMethod.DELETE, "/jpa/**").authenticated() // allowed only when signed in
                 .antMatchers(HttpMethod.POST, "/jpa/**").authenticated() // allowed only when signed in
                 .antMatchers(HttpMethod.PUT, "/jpa/**").authenticated() // allowed only when signed in
                 .antMatchers(HttpMethod.OPTIONS, "/welcome").authenticated() // allowed only when signed in
-                .antMatchers(HttpMethod.OPTIONS, "/welcome-bean").authenticated() // allowed only when signed in
                 .anyRequest()
 //                .authenticated();
                 .denyAll(); // anything else is denied; this is a safeguard in case we left something out.

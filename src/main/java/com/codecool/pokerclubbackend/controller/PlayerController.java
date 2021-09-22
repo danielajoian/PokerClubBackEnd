@@ -5,6 +5,9 @@ import com.codecool.pokerclubbackend.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -15,6 +18,8 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4000")
 public class PlayerController {
 
+    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
     private PlayerRepository playerRepository;
 
     private PlayerController() {};
@@ -24,10 +29,10 @@ public class PlayerController {
         this.playerRepository = playerRepository;
     }
 
-    @GetMapping(path = "/players")
-    public List<PlayerJpa> getAllPlayers() {
-        return playerRepository.findAll();
-    }
+//    @GetMapping(path = "/players")
+//    public List<PlayerJpa> getAllPlayers() {
+//        return playerRepository.findAll();
+//    }
 
     @GetMapping(path = "/players/{username}")
     public PlayerJpa getPlayerDetails(@PathVariable String username) {
@@ -41,6 +46,7 @@ public class PlayerController {
             @RequestBody PlayerJpa player) {
 
         player.setUsername(username);
+        player.setPassword(encoder.encode(player.getPassword()));
         PlayerJpa createdPlayer = playerRepository.save(player);
 
         //Get current resource url

@@ -1,6 +1,7 @@
 package com.codecool.pokerclubbackend.model;
 
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -17,6 +18,7 @@ import java.util.Objects;
 @Builder
 //@NoArgsConstructor
 @AllArgsConstructor
+@Slf4j
 public class PlayerJpa {
 
     @Id

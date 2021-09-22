@@ -1,5 +1,6 @@
 package com.codecool.pokerclubbackend.controller;
 
+import com.codecool.pokerclubbackend.model.ClubJpa;
 import com.codecool.pokerclubbackend.model.PlayerJpa;
 import com.codecool.pokerclubbackend.repository.ClubRepository;
 import com.codecool.pokerclubbackend.repository.PlayerRepository;
@@ -11,10 +12,13 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -22,8 +26,10 @@ import java.util.Map;
 @CrossOrigin(origins = "http://localhost:4000")
 public class AuthenticationController {
 
+    @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
     private JwtTokenServices jwtTokenServices;
 
     @Autowired
@@ -52,16 +58,16 @@ public class AuthenticationController {
             Authentication authentication = authenticationManager
                     .authenticate(new UsernamePasswordAuthenticationToken(username,
                             data.getPassword()));
-//            List<String> roles = authentication.getAuthorities()
-//                    .stream()
-//                    .map(GrantedAuthority::getAuthority)
-//                    .collect(Collectors.toList());
+            List<String> roles = authentication.getAuthorities()
+                    .stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .collect(Collectors.toList());
 
             String token = jwtTokenServices.createToken(username);
 
             Map<Object, Object> model = new HashMap<>();
             model.put("username", username);
-//            model.put("roles", roles);
+            model.put("roles", roles);
             model.put("token", token);
             return ResponseEntity.ok(model);
         } catch (AuthenticationException e) {
@@ -69,30 +75,30 @@ public class AuthenticationController {
         }
     }
 
-//    @PostMapping("/authenticateClub")
-//    public ResponseEntity signin(@RequestBody ClubCredentials data) {
-//        try {
-//            String clubUsername = data.getClubUsername();
-//            // authenticationManager.authenticate calls loadUserByUsername in CustomUserDetailsService
-//            Authentication authentication = authenticationManager
-//                    .authenticate(new UsernamePasswordAuthenticationToken(clubUsername,
-//                            data.getPassword()));
-//            List<String> roles = authentication.getAuthorities()
-//                    .stream()
-//                    .map(GrantedAuthority::getAuthority)
-//                    .collect(Collectors.toList());
-//
-//            String token = jwtTokenServices.createToken(clubUsername, roles);
-//
-//            Map<Object, Object> model = new HashMap<>();
-//            model.put("clubUsername", clubUsername);
-//            model.put("roles", roles);
-//            model.put("token", token);
-//            return ResponseEntity.ok(model);
-//        } catch (AuthenticationException e) {
-//            throw new BadCredentialsException("Invalid username/password supplied");
-//        }
-//    }
+    @PostMapping("/authenticateClub")
+    public ResponseEntity signin(@RequestBody ClubJpa data) {
+        try {
+            String clubUsername = data.getClubUsername();
+            // authenticationManager.authenticate calls loadUserByUsername in CustomUserDetailsService
+            Authentication authentication = authenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(clubUsername,
+                            data.getPassword()));
+            List<String> roles = authentication.getAuthorities()
+                    .stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .collect(Collectors.toList());
+
+            String token = jwtTokenServices.createToken(clubUsername, roles);
+
+            Map<Object, Object> model = new HashMap<>();
+            model.put("clubUsername", clubUsername);
+            model.put("roles", roles);
+            model.put("token", token);
+            return ResponseEntity.ok(model);
+        } catch (AuthenticationException e) {
+            throw new BadCredentialsException("Invalid username/password supplied");
+        }
+    }
 }
 
 
