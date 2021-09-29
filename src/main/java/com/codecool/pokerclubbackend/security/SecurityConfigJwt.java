@@ -63,36 +63,36 @@ public class SecurityConfigJwt extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .httpBasic().disable() // By default Spring Security uses HTTP Basic authentication, we disable this filter.
                 .csrf().disable() // Disable CSRF. Leaving it enabled would ignore GET, HEAD, TRACE, OPTIONS
                 // Disable Tomcat's session management. This causes HttpSession to be null and no session cookie to be created
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-//                .addFilter(new JwtTokenFilter(jwtTokenServices))
-//                .addFilterAfter(new JwtTokenFilter(jwtTokenServices), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests() // restrict access based on the config below:
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/jpa/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/players/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/players/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/players/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/clubs/**").permitAll()
-                .antMatchers("/authenticatePlayer").permitAll()
+                .antMatchers(HttpMethod.GET, "/clubs/**").permitAll()
+                .antMatchers( "/authenticatePlayer").permitAll()
+                .antMatchers(HttpMethod.PUT, "/players/**").authenticated()     // allowed only when signed in
+                .antMatchers(HttpMethod.DELETE, "/players/**").authenticated()  // allowed only when signed in
+                .antMatchers(HttpMethod.GET, "/welcome-bean").authenticated()   // allowed only when signed in
                 .antMatchers("/authenticateClub").permitAll()
-                .antMatchers(HttpMethod.GET, "/welcome-bean").authenticated() // allowed only when signed in
-                .antMatchers(HttpMethod.OPTIONS, "/clubs/**").authenticated() // allowed only when signed in
-                .antMatchers(HttpMethod.OPTIONS, "/players/**").authenticated() // allowed only when signed in
-                .antMatchers(HttpMethod.DELETE, "/jpa/**").authenticated() // allowed only when signed in
-                .antMatchers(HttpMethod.POST, "/jpa/**").authenticated() // allowed only when signed in
-                .antMatchers(HttpMethod.PUT, "/jpa/**").authenticated() // allowed only when signed in
-                .antMatchers(HttpMethod.OPTIONS, "/welcome").authenticated() // allowed only when signed in
+                .antMatchers(HttpMethod.GET, "/welcome-bean").authenticated()   // allowed only when signed in
+//                .antMatchers(HttpMethod.OPTIONS, "/clubs/**").authenticated()       // allowed only when signed in
+                .antMatchers(HttpMethod.PUT, "/clubs/**").authenticated()       // allowed only when signed in
+                .antMatchers(HttpMethod.DELETE, "/clubs/**").authenticated()    // allowed only when signed in
+//                .antMatchers(HttpMethod.OPTIONS, "/players/**").authenticated()     // allowed only when signed in
+                .antMatchers(HttpMethod.DELETE, "/jpa/**").authenticated()      // allowed only when signed in
+                .antMatchers(HttpMethod.POST, "/jpa/**").authenticated()        // allowed only when signed in
+                .antMatchers(HttpMethod.PUT, "/jpa/**").authenticated()         // allowed only when signed in
+                .antMatchers(HttpMethod.GET, "/welcome").authenticated()    // allowed only when signed in
                 .anyRequest()
-//                .authenticated();
-                .denyAll(); // anything else is denied; this is a safeguard in case we left something out.
-//            .and()
-//                .httpBasic();
-        // Here we define our custom filter that uses the JWT tokens for authentication.
-//            .addFilterBefore(new JwtTokenFilter(jwtTokenServices), UsernamePasswordAuthenticationFilter.class)
+                .authenticated();
+
         http.addFilterBefore(new JwtTokenFilter(jwtTokenServices), UsernamePasswordAuthenticationFilter.class);
 
     }

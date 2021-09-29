@@ -1,6 +1,8 @@
 package com.codecool.pokerclubbackend.controller;
 
+import com.codecool.pokerclubbackend.model.ClubCredentials;
 import com.codecool.pokerclubbackend.model.ClubJpa;
+import com.codecool.pokerclubbackend.model.PlayerCredentials;
 import com.codecool.pokerclubbackend.model.PlayerJpa;
 import com.codecool.pokerclubbackend.repository.ClubRepository;
 import com.codecool.pokerclubbackend.repository.PlayerRepository;
@@ -36,6 +38,7 @@ public class AuthenticationController {
     public AuthenticationController() {
     }
 
+//    @Autowired
     public AuthenticationController(AuthenticationManager authenticationManager,
                                     JwtTokenServices jwtTokenServices,
                                     PlayerRepository player) {
@@ -43,6 +46,7 @@ public class AuthenticationController {
         this.jwtTokenServices = jwtTokenServices;
     }
 
+//    @Autowired
     public AuthenticationController(AuthenticationManager authenticationManager,
                                     JwtTokenServices jwtTokenServices,
                                     ClubRepository club) {
@@ -51,7 +55,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/authenticatePlayer")
-    public ResponseEntity signinPlayer(@RequestBody PlayerJpa data) {
+    public ResponseEntity<?> signinPlayer(@RequestBody PlayerJpa data) {
         try {
             String username = data.getUsername();
             // authenticationManager.authenticate calls loadUserByUsername in CustomUserDetailsService
@@ -76,7 +80,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/authenticateClub")
-    public ResponseEntity signin(@RequestBody ClubJpa data) {
+    public ResponseEntity<?> signin(@RequestBody ClubJpa data) {
         try {
             String clubUsername = data.getClubUsername();
             // authenticationManager.authenticate calls loadUserByUsername in CustomUserDetailsService

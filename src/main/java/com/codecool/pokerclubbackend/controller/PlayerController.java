@@ -35,8 +35,21 @@ public class PlayerController {
 //    }
 
     @GetMapping(path = "/players/{username}")
-    public PlayerJpa getPlayerDetails(@PathVariable String username) {
-        return playerRepository.findByUsername(username).get();
+    public PlayerJpa getPlayerDetails(@PathVariable String username)
+//                                      @PathVariable String password)
+    {
+        PlayerJpa player = playerRepository.findByUsername(username).get();
+//        if (player.getUsername().equals(username)
+////                && encoder.matches(password, player.getPassword())
+//        )
+//        {
+//            System.out.println("player");
+            return player;
+//        }
+//        else{
+//            System.out.println("No match");
+//            return null;
+//        }
     }
 
     //POST -> Create a new player
