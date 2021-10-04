@@ -78,6 +78,8 @@ public class PlayerController {
 
         player.setId(id);
         player.setUsername(username);
+        player.setCity(player.getCity());
+//        player.setPassword(encoder.encode(player.getPassword()));
         PlayerJpa playerUpdated = playerRepository.save(player);
 
         return new ResponseEntity<PlayerJpa>(playerUpdated, HttpStatus.OK);
@@ -92,4 +94,5 @@ public class PlayerController {
         playerRepository.deleteById(id);
         return ResponseEntity.notFound().build();
     }
+
 }

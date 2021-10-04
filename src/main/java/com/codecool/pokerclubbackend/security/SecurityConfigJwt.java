@@ -72,24 +72,29 @@ public class SecurityConfigJwt extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/jpa/**").permitAll()
+                .antMatchers(HttpMethod.OPTIONS, "/jpa/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/players/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/players/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/clubs/**").permitAll()
+                .antMatchers(HttpMethod.OPTIONS, "/players/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/clubs/**").permitAll()
+//                .antMatchers(HttpMethod.GET, "/clubs").permitAll()
+                .antMatchers(HttpMethod.POST, "/clubs/**").permitAll()
+                .antMatchers(HttpMethod.OPTIONS, "/clubs/**").permitAll()
+                .antMatchers("/authenticateClub").permitAll()
                 .antMatchers( "/authenticatePlayer").permitAll()
+                .antMatchers(HttpMethod.GET, "/welcome-bean").authenticated()   // allowed only when signed in
                 .antMatchers(HttpMethod.PUT, "/players/**").authenticated()     // allowed only when signed in
                 .antMatchers(HttpMethod.DELETE, "/players/**").authenticated()  // allowed only when signed in
-                .antMatchers(HttpMethod.GET, "/welcome-bean").authenticated()   // allowed only when signed in
-                .antMatchers("/authenticateClub").permitAll()
-                .antMatchers(HttpMethod.GET, "/welcome-bean").authenticated()   // allowed only when signed in
-//                .antMatchers(HttpMethod.OPTIONS, "/clubs/**").authenticated()       // allowed only when signed in
+                .antMatchers(HttpMethod.OPTIONS, "/players/**").authenticated()  // allowed only when signed in
+                .antMatchers(HttpMethod.GET, "/clubs/**").authenticated()
+                .antMatchers(HttpMethod.GET, "/allClubs/**").authenticated()
                 .antMatchers(HttpMethod.PUT, "/clubs/**").authenticated()       // allowed only when signed in
                 .antMatchers(HttpMethod.DELETE, "/clubs/**").authenticated()    // allowed only when signed in
-//                .antMatchers(HttpMethod.OPTIONS, "/players/**").authenticated()     // allowed only when signed in
-                .antMatchers(HttpMethod.DELETE, "/jpa/**").authenticated()      // allowed only when signed in
+                .antMatchers(HttpMethod.OPTIONS, "/clubs/**").authenticated()
                 .antMatchers(HttpMethod.POST, "/jpa/**").authenticated()        // allowed only when signed in
                 .antMatchers(HttpMethod.PUT, "/jpa/**").authenticated()         // allowed only when signed in
-                .antMatchers(HttpMethod.GET, "/welcome").authenticated()    // allowed only when signed in
+                .antMatchers(HttpMethod.DELETE, "/jpa/**").authenticated()      // allowed only when signed in
+                .antMatchers(HttpMethod.OPTIONS, "/jpa/**").authenticated()         // allowed only when signed in
                 .anyRequest()
                 .authenticated();
 

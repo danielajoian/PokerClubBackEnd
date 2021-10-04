@@ -21,7 +21,7 @@ import java.util.List;
 public class JwtTokenServices {
 
     @Value("${security.jwt.token.secret-key:secret}")
-    private String secretKey = "secret";
+    private String secretKey = "myverysecretkey1234";
 
     @Value("${security.jwt.token.expire-length:3600000}")
     private long validityInMilliseconds = 36000000; // 10h
@@ -98,9 +98,9 @@ public class JwtTokenServices {
         String username = body.getSubject();
         List<String> roles = (List<String>) body.get(rolesFieldName);
         List<SimpleGrantedAuthority> authorities = new LinkedList<>();
-        for (String role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role));
-        }
+//        for (String role : roles) {
+//            authorities.add(new SimpleGrantedAuthority(role));
+//        }
         return new UsernamePasswordAuthenticationToken(username, "", authorities);
     }
 

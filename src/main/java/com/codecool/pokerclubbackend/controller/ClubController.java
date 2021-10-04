@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -35,6 +36,19 @@ public class ClubController {
     @GetMapping(path = "/clubs/{clubUsername}")
     public ClubJpa getClub(@PathVariable String clubUsername) {
         return clubRepository.findByClubUsername(clubUsername).get();
+    }
+
+    @GetMapping(path = "/allClubs/{city}")
+    public List<ClubJpa> getClubByCity(@PathVariable String city) {
+//        List<ClubJpa> allClubs = clubRepository.findAll();
+//        List<ClubJpa> clubsByCity = new ArrayList<>();
+//        for (ClubJpa clubJpa: allClubs) {
+//            if (clubJpa.getCity().equals(city)) {
+//                clubsByCity.add(clubJpa);
+//            }
+//        }
+
+        return clubRepository.findByCity(city);
     }
 
     //POST -> Create a new club
@@ -63,6 +77,7 @@ public class ClubController {
 
         club.setId(id);
         club.setClubUsername(clubUsername);
+//        club.setPassword(encoder.encode(club.getPassword()));
         ClubJpa clubUpdated = clubRepository.save(club);
 
         return new ResponseEntity<ClubJpa>(clubUpdated, HttpStatus.OK);
