@@ -94,7 +94,13 @@ public class SecurityConfigJwt extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/jpa/**").authenticated()        // allowed only when signed in
                 .antMatchers(HttpMethod.PUT, "/jpa/**").authenticated()         // allowed only when signed in
                 .antMatchers(HttpMethod.DELETE, "/jpa/**").authenticated()      // allowed only when signed in
-                .antMatchers(HttpMethod.OPTIONS, "/jpa/**").authenticated()         // allowed only when signed in
+                .antMatchers(HttpMethod.OPTIONS, "/jpa/**").authenticated()
+                .antMatchers(HttpMethod.POST, "/**/privateGames/**").authenticated()        // allowed only when signed in
+                .antMatchers(HttpMethod.PUT, "/**/privateGames/**").authenticated()         // allowed only when signed in
+                .antMatchers(HttpMethod.DELETE, "/**/privateGames/**").authenticated()      // allowed only when signed in
+                .antMatchers(HttpMethod.OPTIONS, "/**/privateGames/**").authenticated()         // allowed only when signed in
+                .antMatchers(HttpMethod.GET, "/private/**").authenticated()         // allowed only when signed in
+                .antMatchers(HttpMethod.OPTIONS, "/private/**").authenticated()         // allowed only when signed in
                 .anyRequest()
                 .authenticated();
 

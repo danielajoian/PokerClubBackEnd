@@ -24,6 +24,8 @@ public class PlayerJpa {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+//    private Long privateGameId;
     private String username;
     private String city;
     private String email;

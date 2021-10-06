@@ -15,27 +15,33 @@ import java.util.Objects;
 @Builder
 //@NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "games")
-public class GameJpa {
+@Table(name = "private_games")
+public class PrivateGameJpa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
     private String clubUsername;
     private String title;
+
     @Column(length = 5000)
     private String details;
+
     private Date beginDate;
     private boolean hasEnded;
-    private boolean notPublic;
+
+    private String secretCode;
+    private String username;
+    private boolean notPrivate;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        GameJpa gameJpa = (GameJpa) o;
+        PrivateGameJpa privateGameJpa = (PrivateGameJpa) o;
 
-        return Objects.equals(id, gameJpa.id);
+        return Objects.equals(id, privateGameJpa.id);
     }
 
     @Override
