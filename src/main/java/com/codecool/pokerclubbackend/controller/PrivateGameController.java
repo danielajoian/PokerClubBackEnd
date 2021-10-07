@@ -39,15 +39,6 @@ public class PrivateGameController {
         return privateGameRepository.findByClubUsername(clubUsername);
     }
 
-    @GetMapping(path = "/{clubUsername}/privateGames/{id}/players")
-    public List<PlayerJpa> getAllPlayers(@PathVariable String clubUsername,
-                                         @PathVariable Long id) {
-        PrivateGameJpa privateGameJpa = privateGameRepository.findById(id).get();
-        String username = privateGameJpa.getUsername();
-//        List<PrivateGameJpa> byClubUsername = privateGameRepository.findByClubUsername(clubUsername);
-        return playerRepository.findByPrivateGameId(id);
-    }
-
     @GetMapping(path = "/{clubUsername}/privateGames/{id}")
     public PrivateGameJpa getGame(
             @PathVariable String clubUsername,

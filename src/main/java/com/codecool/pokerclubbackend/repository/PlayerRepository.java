@@ -11,7 +11,6 @@ import java.util.Optional;
 public interface PlayerRepository extends JpaRepository<PlayerJpa, Long> {
 
     Optional<PlayerJpa> findByUsername(String username);
-//    Optional<PlayerJpa> findById(Long id);
 
     List<PlayerJpa> findByPrivateGameId(Long privateGameId);
 }

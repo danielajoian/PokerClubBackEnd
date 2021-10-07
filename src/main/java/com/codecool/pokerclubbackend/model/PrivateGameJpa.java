@@ -32,7 +32,7 @@ public class PrivateGameJpa {
     private boolean hasEnded;
 
     private String secretCode;
-    private String username;
+
     private boolean notPrivate;
 
     @Override

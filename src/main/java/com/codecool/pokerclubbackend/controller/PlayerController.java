@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -15,7 +13,8 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4000")
+//@CrossOrigin(origins = "http://localhost:4000")
+@CrossOrigin("*")
 public class PlayerController {
 
     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -29,27 +28,18 @@ public class PlayerController {
         this.playerRepository = playerRepository;
     }
 
-//    @GetMapping(path = "/players")
-//    public List<PlayerJpa> getAllPlayers() {
-//        return playerRepository.findAll();
-//    }
+    @GetMapping(path = "/playersByGame/{privateGameId}")
+    public List<PlayerJpa> getAllPlayersByGame(@PathVariable Long privateGameId) {
+        return playerRepository.findByPrivateGameId(privateGameId);
+    }
 
     @GetMapping(path = "/players/{username}")
     public PlayerJpa getPlayerDetails(@PathVariable String username)
 //                                      @PathVariable String password)
     {
         PlayerJpa player = playerRepository.findByUsername(username).get();
-//        if (player.getUsername().equals(username)
-////                && encoder.matches(password, player.getPassword())
-//        )
-//        {
-//            System.out.println("player");
+
             return player;
-//        }
-//        else{
-//            System.out.println("No match");
-//            return null;
-//        }
     }
 
     //POST -> Create a new player
@@ -68,6 +58,21 @@ public class PlayerController {
 
         return ResponseEntity.created(uri).build();
     }
+
+    @PutMapping(path = "/playersAddGame/{privateGameId}/{username}")
+    public ResponseEntity<PlayerJpa> addPrivateGame(
+            @PathVariable Long privateGameId,
+            @PathVariable String username,
+            @RequestBody PlayerJpa player
+    ) {
+
+        player.setPrivateGameId(privateGameId);
+        player.setUsername(username);
+        PlayerJpa privateGameAdded = playerRepository.save(player);
+
+        return new ResponseEntity<PlayerJpa>(privateGameAdded, HttpStatus.OK);
+    }
+
 
     //PUT -> Edit/Update a player
     @PutMapping(path = "/players/{username}/{id}")
