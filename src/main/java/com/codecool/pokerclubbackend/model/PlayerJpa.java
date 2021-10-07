@@ -1,5 +1,8 @@
 package com.codecool.pokerclubbackend.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Hibernate;
@@ -9,6 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+//swagger annotations
+@ApiModel(description = "Details about players")
+
 @Entity
 @Table(name = "players")
 @Getter
@@ -16,24 +22,32 @@ import java.util.Objects;
 @ToString
 @RequiredArgsConstructor
 @Builder
-//@NoArgsConstructor
 @AllArgsConstructor
 @Slf4j
 public class PlayerJpa {
 
+    //swagger annotations
+    @ApiModelProperty(notes = "Unique player Id")
     @Id
     @Column(name="id", unique=true)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @ApiModelProperty(notes = "Unique private game Id that the player has sign-in to")
     private Long privateGameId;
 
+    @ApiModelProperty(notes = "Unique name for the player")
     @Column(name="username", unique=true)
     private String username;
+
+    @ApiModelProperty(notes = "The city of the player")
     private String city;
 
+    @ApiModelProperty(notes = "Unique email for the player")
     @Column(name="email", unique=true)
     private String email;
+
+    @ApiModelProperty(notes = "Password for the player")
     private String password;
 
     @Column
