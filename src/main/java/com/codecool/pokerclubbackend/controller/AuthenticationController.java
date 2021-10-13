@@ -7,6 +7,7 @@ import com.codecool.pokerclubbackend.model.PlayerJpa;
 import com.codecool.pokerclubbackend.repository.ClubRepository;
 import com.codecool.pokerclubbackend.repository.PlayerRepository;
 import com.codecool.pokerclubbackend.security.JwtTokenServices;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -54,6 +55,11 @@ public class AuthenticationController {
         this.jwtTokenServices = jwtTokenServices;
     }
 
+    //swagger annotations
+    @ApiOperation(value = "Player sign-in",
+            notes = "Players that already have an account can sign-in here",
+            response = PlayerJpa.class)
+
     @PostMapping("/authenticatePlayer")
     public ResponseEntity<?> signinPlayer(@RequestBody PlayerJpa data) {
         try {
@@ -78,6 +84,11 @@ public class AuthenticationController {
             throw new BadCredentialsException("Invalid username/password supplied");
         }
     }
+
+    //swagger annotations
+    @ApiOperation(value = "Club sign-in",
+            notes = "Clubs that already have an account can sign-in here",
+            response = ClubJpa.class)
 
     @PostMapping("/authenticateClub")
     public ResponseEntity<?> signin(@RequestBody ClubJpa data) {
