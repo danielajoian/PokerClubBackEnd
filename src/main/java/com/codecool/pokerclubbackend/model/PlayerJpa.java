@@ -22,10 +22,17 @@ import java.util.Objects;
 public class PlayerJpa {
 
     @Id
+    @Column(name="id", unique=true)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    private Long privateGameId;
+
+    @Column(name="username", unique=true)
     private String username;
     private String city;
+
+    @Column(name="email", unique=true)
     private String email;
     private String password;
 
