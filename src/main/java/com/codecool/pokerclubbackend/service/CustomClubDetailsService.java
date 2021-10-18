@@ -1,7 +1,8 @@
-package com.codecool.pokerclubbackend.security;
+package com.codecool.pokerclubbackend.service;
 
 import com.codecool.pokerclubbackend.model.ClubJpa;
 import com.codecool.pokerclubbackend.repository.ClubRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +22,7 @@ public class CustomClubDetailsService implements UserDetailsService {
 
     private final ClubRepository clubRepository;
 
+    @Autowired
     public CustomClubDetailsService(ClubRepository clubRepository) {
         this.clubRepository = clubRepository;
     }

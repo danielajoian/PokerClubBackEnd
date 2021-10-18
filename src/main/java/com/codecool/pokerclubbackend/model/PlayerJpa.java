@@ -50,6 +50,9 @@ public class PlayerJpa {
     @ApiModelProperty(notes = "Password for the player")
     private String password;
 
+    @ApiModelProperty(notes = "Profile image of the player")
+    private String imageLink;
+
     @Column
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default

@@ -1,5 +1,7 @@
 package com.codecool.pokerclubbackend.security;
 
+        import com.codecool.pokerclubbackend.service.CustomClubDetailsService;
+        import com.codecool.pokerclubbackend.service.CustomPlayerDetailsService;
         import org.springframework.beans.factory.annotation.Autowired;
         import org.springframework.context.annotation.Bean;
         import org.springframework.context.annotation.Configuration;
@@ -70,6 +72,9 @@ public class SecurityConfigJwt extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests() // restrict access based on the config below:
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/uploadImg").permitAll()
+                .antMatchers(HttpMethod.GET, "/downloadImg/**").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/deleteImg/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/jpa/**").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/jpa/**").permitAll()
@@ -78,6 +83,10 @@ public class SecurityConfigJwt extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.OPTIONS, "/players/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/clubs/**").permitAll()
 //                .antMatchers(HttpMethod.GET, "/clubs").permitAll()
+                .antMatchers(HttpMethod.POST, "/**/playerImage/upload").permitAll()
+                .antMatchers(HttpMethod.GET, "/**/playerImage/download/**").permitAll().
+                antMatchers(HttpMethod.POST, "/**/clubImage/upload").permitAll()
+                .antMatchers(HttpMethod.GET, "/**/clubImage/download/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/clubs/**").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/clubs/**").permitAll()
                 .antMatchers("/authenticateClub").permitAll()
