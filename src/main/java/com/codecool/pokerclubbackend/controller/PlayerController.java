@@ -2,11 +2,15 @@ package com.codecool.pokerclubbackend.controller;
 
 import com.codecool.pokerclubbackend.model.PlayerJpa;
 import com.codecool.pokerclubbackend.repository.PlayerRepository;
+import com.codecool.pokerclubbackend.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -20,12 +24,14 @@ public class PlayerController {
     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     private PlayerRepository playerRepository;
+    private PlayerService playerService;
 
     private PlayerController() {};
 
     @Autowired
-    public PlayerController(PlayerRepository playerRepository) {
+    public PlayerController(PlayerRepository playerRepository, PlayerService playerService) {
         this.playerRepository = playerRepository;
+        this.playerService = playerService;
     }
 
     @GetMapping(path = "/playersByGame/{privateGameId}")
@@ -38,7 +44,6 @@ public class PlayerController {
 //                                      @PathVariable String password)
     {
         PlayerJpa player = playerRepository.findByUsername(username).get();
-
             return player;
     }
 
@@ -57,6 +62,31 @@ public class PlayerController {
                 .path("/{id}").buildAndExpand(createdPlayer.getId()).toUri();
 
         return ResponseEntity.created(uri).build();
+    }
+
+    @PostMapping(path = "/{id}/playerImage/upload",
+                consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+                produces = MediaType.APPLICATION_JSON_VALUE)
+    public void uploadPlayerImage(@PathVariable Long id,
+                                  @RequestParam MultipartFile file) {
+        playerService.uploadPlayerImage(id, file);
+    }
+
+    @GetMapping("/{id}/playerImage/download/{imgName}")
+    public ResponseEntity<ByteArrayResource> downloadPlayerImage(
+            @PathVariable Long id,
+            @PathVariable String imgName) {
+
+        byte[] data = playerService.downloadPlayerImage(id);
+        ByteArrayResource resource = new ByteArrayResource(data);
+
+        return ResponseEntity
+                .ok()
+                .contentLength(data.length)
+                .header("Content-type", "application/octet-stream")
+                .header("Content-disposition",
+                        "attachment; filename=\"" + imgName + "\"")
+                .body(resource);
     }
 
     @PutMapping(path = "/playersAddGame/{privateGameId}/{username}")
@@ -91,12 +121,14 @@ public class PlayerController {
     }
 
     //DELETE -> player
-    @DeleteMapping(path = "/players/{username}/{id}")
+    @DeleteMapping(path = "/players/{username}/{id}/{imageLink}")
     public ResponseEntity<Void> deletePlayer(
             @PathVariable String username,
+            @PathVariable String imageLink,
             @PathVariable Long id) {
 
-        playerRepository.deleteById(id);
+        playerService.deletePlayerImage(id, imageLink);
+//        playerRepository.deleteById(id);
         return ResponseEntity.notFound().build();
     }
 

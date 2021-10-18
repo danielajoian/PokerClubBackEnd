@@ -1,5 +1,6 @@
 package com.codecool.pokerclubbackend.model;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -29,7 +30,9 @@ public class ClubJpa {
     private String address;
     private String email;
     private String site;
-    private Integer phoneNumber;
+    private String phoneNumber;
+
+    private String imageLink;
 
     @Column
     @ElementCollection(fetch = FetchType.EAGER)
