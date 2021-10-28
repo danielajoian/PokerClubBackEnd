@@ -17,7 +17,8 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4000")
+@CrossOrigin("*")
+//@CrossOrigin(origins = "http://localhost:4000")
 public class ClubController {
 
     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -38,7 +39,7 @@ public class ClubController {
         return clubRepository.findAll();
     }
 
-    @GetMapping(path = "/clubs/{clubUsername}")
+    @GetMapping(path = "/club/{clubUsername}")
     public ClubJpa getClub(@PathVariable String clubUsername) {
         return clubRepository.findByClubUsername(clubUsername).get();
     }
@@ -91,7 +92,7 @@ public class ClubController {
     }
 
     //PUT -> Edit/Update a club
-    @PutMapping(path = "/clubs/{clubUsername}/{id}")
+    @PutMapping(path = "/changeClub/{clubUsername}/{id}")
     public ResponseEntity<ClubJpa> updateClub(
             @PathVariable String clubUsername,
             @PathVariable Long id,
@@ -99,10 +100,22 @@ public class ClubController {
 
         club.setId(id);
         club.setClubUsername(clubUsername);
-//        club.setPassword(encoder.encode(club.getPassword()));
+        club.setImageLink(club.getImageLink());
         ClubJpa clubUpdated = clubRepository.save(club);
 
         return new ResponseEntity<ClubJpa>(clubUpdated, HttpStatus.OK);
+    }
+
+    @PutMapping(path = "/club/{clubUsername}/changePassword")
+    public ResponseEntity<ClubJpa> changePassword(
+            @PathVariable String clubUsername,
+            @RequestBody ClubJpa club) {
+
+        club.setClubUsername(clubUsername);
+        club.setPassword(encoder.encode(club.getPassword()));
+        ClubJpa passwordChanged = clubRepository.save(club);
+
+        return new ResponseEntity<>(passwordChanged, HttpStatus.OK);
     }
 
     //DELETE -> club

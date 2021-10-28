@@ -26,12 +26,17 @@ public class PlayerController {
     private PlayerRepository playerRepository;
     private PlayerService playerService;
 
-    private PlayerController() {};
+    private PlayerController() {}
 
     @Autowired
     public PlayerController(PlayerRepository playerRepository, PlayerService playerService) {
         this.playerRepository = playerRepository;
         this.playerService = playerService;
+    }
+
+    @GetMapping(path = "/getAllPlayers")
+    public List<PlayerJpa> getAllPlayers() {
+        return playerRepository.findAll();
     }
 
     @GetMapping(path = "/playersByGame/{privateGameId}")
@@ -40,11 +45,8 @@ public class PlayerController {
     }
 
     @GetMapping(path = "/players/{username}")
-    public PlayerJpa getPlayerDetails(@PathVariable String username)
-//                                      @PathVariable String password)
-    {
-        PlayerJpa player = playerRepository.findByUsername(username).get();
-            return player;
+    public PlayerJpa getPlayerDetails(@PathVariable String username){
+        return playerRepository.findByUsername(username).get();
     }
 
     //POST -> Create a new player
@@ -93,14 +95,13 @@ public class PlayerController {
     public ResponseEntity<PlayerJpa> addPrivateGame(
             @PathVariable Long privateGameId,
             @PathVariable String username,
-            @RequestBody PlayerJpa player
-    ) {
+            @RequestBody PlayerJpa player) {
 
         player.setPrivateGameId(privateGameId);
         player.setUsername(username);
         PlayerJpa privateGameAdded = playerRepository.save(player);
 
-        return new ResponseEntity<PlayerJpa>(privateGameAdded, HttpStatus.OK);
+        return new ResponseEntity<>(privateGameAdded, HttpStatus.OK);
     }
 
 
@@ -114,10 +115,22 @@ public class PlayerController {
         player.setId(id);
         player.setUsername(username);
         player.setCity(player.getCity());
-//        player.setPassword(encoder.encode(player.getPassword()));
+        player.setImageLink(player.getImageLink());
         PlayerJpa playerUpdated = playerRepository.save(player);
 
-        return new ResponseEntity<PlayerJpa>(playerUpdated, HttpStatus.OK);
+        return new ResponseEntity<>(playerUpdated, HttpStatus.OK);
+    }
+
+    @PutMapping(path = "/player/{username}/changePassword")
+    public ResponseEntity<PlayerJpa> changePassword(
+            @PathVariable String username,
+            @RequestBody PlayerJpa player) {
+
+        player.setUsername(username);
+        player.setPassword(encoder.encode(player.getPassword()));
+        PlayerJpa passwordChanged = playerRepository.save(player);
+
+        return new ResponseEntity<>(passwordChanged, HttpStatus.OK);
     }
 
     //DELETE -> player

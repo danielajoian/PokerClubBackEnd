@@ -77,12 +77,13 @@ public class SecurityConfigJwt extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE, "/deleteImg/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/jpa/**").permitAll()
-                .antMatchers(HttpMethod.OPTIONS, "/jpa/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/players/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/players/**").permitAll()
+                .antMatchers(HttpMethod.PUT, "/player/**/changePassword").permitAll()
+                .antMatchers(HttpMethod.PUT, "/club/**/changePassword").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/players/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/clubs/**").permitAll()
-//                .antMatchers(HttpMethod.GET, "/clubs").permitAll()
+                .antMatchers(HttpMethod.GET, "/getAllPlayers").permitAll()
                 .antMatchers(HttpMethod.POST, "/**/playerImage/upload").permitAll()
                 .antMatchers(HttpMethod.GET, "/**/playerImage/download/**").permitAll().
                 antMatchers(HttpMethod.POST, "/**/clubImage/upload").permitAll()
@@ -99,24 +100,21 @@ public class SecurityConfigJwt extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.OPTIONS, "/playersByGame/**").authenticated()     // allowed only when signed in
                 .antMatchers(HttpMethod.DELETE, "/players/**").authenticated()  // allowed only when signed in
                 .antMatchers(HttpMethod.OPTIONS, "/players/**").authenticated()  // allowed only when signed in
-                .antMatchers(HttpMethod.GET, "/clubs/**").authenticated()
+                .antMatchers(HttpMethod.GET, "/club/**").authenticated()
                 .antMatchers(HttpMethod.GET, "/allClubs/**").authenticated()
-                .antMatchers(HttpMethod.PUT, "/clubs/**").authenticated()       // allowed only when signed in
+                .antMatchers(HttpMethod.PUT, "/changeClub/**").authenticated()       // allowed only when signed in
                 .antMatchers(HttpMethod.DELETE, "/clubs/**").authenticated()    // allowed only when signed in
                 .antMatchers(HttpMethod.OPTIONS, "/clubs/**").authenticated()
-                .antMatchers(HttpMethod.POST, "/jpa/**").authenticated()        // allowed only when signed in
-                .antMatchers(HttpMethod.PUT, "/jpa/**").authenticated()         // allowed only when signed in
-                .antMatchers(HttpMethod.DELETE, "/jpa/**").authenticated()      // allowed only when signed in
                 .antMatchers(HttpMethod.OPTIONS, "/jpa/**").authenticated()
-                .antMatchers(HttpMethod.POST, "/**/privateGames/**").authenticated()        // allowed only when signed in
-                .antMatchers(HttpMethod.PUT, "/**/privateGames/**").authenticated()         // allowed only when signed in
-                .antMatchers(HttpMethod.DELETE, "/**/privateGames/**").authenticated()      // allowed only when signed in
-                .antMatchers(HttpMethod.OPTIONS, "/**/privateGames/**").authenticated()         // allowed only when signed in
+                .antMatchers(HttpMethod.PUT, "/changeGame/**").authenticated()         // allowed only when signed in
+                .antMatchers(HttpMethod.POST, "/newGame/**").authenticated()        // allowed only when signed in
+                .antMatchers(HttpMethod.DELETE, "/deleteGame/**").authenticated()      // allowed only when signed in
                 .antMatchers(HttpMethod.GET, "/private/**").authenticated()         // allowed only when signed in
-                .antMatchers(HttpMethod.PUT, "/private/**/**").authenticated()         // allowed only when signed in
-//                .antMatchers(HttpMethod.POST, "/private/**").authenticated()         // allowed only when signed in
-                .antMatchers(HttpMethod.DELETE, "/private/**").authenticated()         // allowed only when signed in
-                .antMatchers(HttpMethod.OPTIONS, "/private/**").authenticated()         // allowed only when signed in
+                .antMatchers(HttpMethod.GET, "/**/getPrivateGames").authenticated()        // allowed only when signed in
+                .antMatchers(HttpMethod.GET, "/**/getPrivateGame/**").authenticated()        // allowed only when signed in
+                .antMatchers(HttpMethod.POST, "/**/createPrivateGame").authenticated()        // allowed only when signed in
+                .antMatchers(HttpMethod.PUT, "/**/changePrivateGame/**").authenticated()         // allowed only when signed in
+                .antMatchers(HttpMethod.DELETE, "/**/deletePrivateGame/**").authenticated()      // allowed only when signed in
                 .anyRequest()
                 .authenticated();
 

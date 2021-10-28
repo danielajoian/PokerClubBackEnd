@@ -12,7 +12,8 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4000")
+@CrossOrigin("*")
+//@CrossOrigin(origins = "http://localhost:4000")
 public class GameController {
 
     private GameRepository gameRepository;
@@ -37,7 +38,7 @@ public class GameController {
     }
 
     //POST -> Create a new game
-    @PostMapping(path = "/jpa/{clubUsername}/games")
+    @PostMapping(path = "/newGame/{clubUsername}/games")
     public ResponseEntity<Void> createGame(
             @PathVariable String clubUsername,
             @RequestBody GameJpa game) {
@@ -53,7 +54,7 @@ public class GameController {
     }
 
     //PUT -> Edit/Update a game
-    @PutMapping(path = "/jpa/{clubUsername}/games/{id}")
+    @PutMapping(path = "/changeGame/{clubUsername}/games/{id}")
     public ResponseEntity<GameJpa> updateGame(
             @PathVariable String clubUsername,
             @PathVariable Long id,
@@ -67,7 +68,7 @@ public class GameController {
     }
 
     //DELETE -> game
-    @DeleteMapping(path = "/jpa/{clubUsername}/games/{id}")
+    @DeleteMapping(path = "/deleteGame/{clubUsername}/games/{id}")
     public ResponseEntity<Void> deleteGame(
             @PathVariable String clubUsername,
             @PathVariable Long id) {

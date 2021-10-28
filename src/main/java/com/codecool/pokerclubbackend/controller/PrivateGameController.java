@@ -15,7 +15,8 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4000")
+@CrossOrigin("*")
+//@CrossOrigin(origins = "http://localhost:4000")
 public class PrivateGameController {
 
     private PrivateGameRepository privateGameRepository;
@@ -34,12 +35,12 @@ public class PrivateGameController {
         this.playerRepository = playerRepository;
     }
 
-    @GetMapping(path = "/{clubUsername}/privateGames")
+    @GetMapping(path = "/{clubUsername}/getPrivateGames")
     public List<PrivateGameJpa> getAllGames(@PathVariable String clubUsername) {
         return privateGameRepository.findByClubUsername(clubUsername);
     }
 
-    @GetMapping(path = "/{clubUsername}/privateGames/{id}")
+    @GetMapping(path = "/{clubUsername}/getPrivateGame/{id}")
     public PrivateGameJpa getGame(
             @PathVariable String clubUsername,
             @PathVariable Long id) {
@@ -53,7 +54,7 @@ public class PrivateGameController {
     }
 
     //POST -> Create a new game
-    @PostMapping(path = "/{clubUsername}/privateGames")
+    @PostMapping(path = "/{clubUsername}/createPrivateGame")
     public ResponseEntity<Void> createGame(
             @PathVariable String clubUsername,
             @RequestBody PrivateGameJpa game) {
@@ -69,7 +70,7 @@ public class PrivateGameController {
     }
 
     //PUT -> Edit/Update a game
-    @PutMapping(path = "/{clubUsername}/privateGames/{id}")
+    @PutMapping(path = "/{clubUsername}/changePrivateGame/{id}")
     public ResponseEntity<PrivateGameJpa> updateGame(
             @PathVariable String clubUsername,
             @PathVariable Long id,
@@ -83,7 +84,7 @@ public class PrivateGameController {
     }
 
     //DELETE -> game
-    @DeleteMapping(path = "/{clubUsername}/privateGames/{id}")
+    @DeleteMapping(path = "/{clubUsername}/deletePrivateGame/{id}")
     public ResponseEntity<Void> deleteGame(
             @PathVariable String clubUsername,
             @PathVariable Long id) {
